@@ -5,10 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MoveToNextHole : MonoBehaviour
 {
+    public string nextScene;
+
+    public bool isBallInHole = false;
+
+    public float nextHoleTimer = 0;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        nextHoleTimer = 0;
     }
 
     // Update is called once per frame
@@ -17,11 +23,25 @@ public class MoveToNextHole : MonoBehaviour
         
     }
 
+    void FixedUpdate()
+    {
+        if (isBallInHole)
+        {
+            nextHoleTimer += Time.deltaTime;
+        }
+
+        if(nextHoleTimer > 10)
+        {
+            SceneManager.LoadScene(nextScene);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Ball"))
         {
             Debug.Log("Ball Went In the Hole");
+            isBallInHole = true;
         }
     }
 }
